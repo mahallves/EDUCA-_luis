@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Educa+ | Calendário Escolar</title>
+
+<style>
+*{
+    box-sizing: border-box;
+}
+
+body{
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f9fc;
+    color: #174a70;
+}
+
+header{
+    width: 100%;
+    height: 75px;
+    background: linear-gradient(90deg, #1769aa, #0d8ac7);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 45px;
+    box-shadow: 0 4px 15px rgba(0,70,120,0.15);
+    position: relative;
+}
+
+.logo{
+    color: white;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.botoes{
+    display: flex;
+    gap: 12px;
+}
+
+.botao{
+    width: 45px;
+    height: 45px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    color: white;
+    font-size: 21px;
+    cursor: pointer;
+}
+
+.botao:hover{
+    background: rgba(255,255,255,0.3);
+}
+
+.menu{
+    display: none;
+    position: absolute;
+    top: 85px;
+    right: 45px;
+    width: 250px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0,70,120,0.18);
+    padding: 10px;
+    z-index: 10;
+}
+
+.menu.ativo{
+    display: block;
+}
+
+.menu a{
+    display: block;
+    padding: 14px;
+    color: #174a70;
+    text-decoration: none;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+.menu a:hover{
+    background: #eaf6fc;
+}
+
+main{
+    width: 92%;
+    max-width: 1100px;
+    margin: 40px auto;
+}
+
+.titulo{
+    margin-bottom: 25px;
+}
+
+.titulo h1{
+    margin: 0;
+    color: #1769aa;
+    font-size: 32px;
+}
+
+.titulo p{
+    margin-top: 8px;
+    color: #71808b;
+}
+
+.calendario{
+    background: white;
+    border: 1px solid #dcebf3;
+    border-radius: 10px;
+    overflow-x: auto;
+}
+
+.calendario table{
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 850px;
+}
+
+.calendario th{
+    background: #eaf6fc;
+    color: #1769aa;
+    padding: 14px 10px;
+    text-align: center;
+    border-bottom: 1px solid #d5e5ed;
+}
+
+.calendario td{
+    padding: 14px 10px;
+    text-align: center;
+    border-bottom: 1px solid #e5eef3;
+    color: #174a70;
+    font-size: 14px;
+}
+
+.calendario tr:last-child td{
+    border-bottom: none;
+}
+
+.calendario td:first-child{
+    font-weight: bold;
+    color: #1769aa;
+    white-space: nowrap;
+}
+
+.calendario td:nth-child(2){
+    color: #71808b;
+    white-space: nowrap;
+}
+
+.calendario td:not(:first-child):not(:nth-child(2)){
+    border-left: 1px solid #edf3f6;
+}
+
+.provas{
+    margin-top: 30px;
+    background: white;
+    border: 1px solid #dcebf3;
+    border-radius: 10px;
+    padding: 22px;
+}
+
+.provas h2{
+    margin: 0 0 15px;
+    color: #1769aa;
+    font-size: 21px;
+}
+
+.prova{
+    padding: 11px 0;
+    border-bottom: 1px solid #e5eef3;
+}
+
+.prova:last-child{
+    border-bottom: none;
+}
+
+.prova strong{
+    color: #174a70;
+}
+
+.prova span{
+    color: #71808b;
+    margin-left: 8px;
+}
+
+.acesso{
+    margin-top: 30px;
+    background: white;
+    border: 1px solid #dcebf3;
+    border-radius: 10px;
+    padding: 22px;
+}
+
+.acesso h2{
+    margin: 0 0 8px;
+    color: #1769aa;
+    font-size: 21px;
+}
+
+.acesso p{
+    color: #71808b;
+}
+
+.botao-senha{
+    border: none;
+    background: #1769aa;
+    color: white;
+    padding: 12px 22px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.botao-senha:hover{
+    background: #0d8ac7;
+}
+
+.campo-senha{
+    display: none;
+    margin-top: 18px;
+}
+
+.campo-senha.ativo{
+    display: block;
+}
+
+.campo-senha input{
+    padding: 12px;
+    width: 240px;
+    border: 1px solid #cddfe9;
+    border-radius: 8px;
+    outline: none;
+}
+
+.confirmar{
+    padding: 12px 18px;
+    margin-left: 5px;
+    border: none;
+    border-radius: 8px;
+    background: #1769aa;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.erro{
+    display: none;
+    margin-top: 12px;
+    color: #d32f2f;
+    font-weight: bold;
+}
+
+.erro.mostrar{
+    display: block;
+}
+
+.informacao{
+    display: none;
+    margin-top: 20px;
+    padding: 18px;
+    background: #eaf6fc;
+    border-radius: 8px;
+    color: #174a70;
+}
+
+.informacao.mostrar{
+    display: block;
+}
+
+@media(max-width: 700px){
+
+    header{
+        padding: 0 20px;
+    }
+
+    .menu{
+        right: 20px;
+    }
+
+    main{
+        width: 94%;
+    }
+
+    .campo-senha input{
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .confirmar{
+        width: 100%;
+        margin-left: 0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        Educa+
+    </div>
+
+    <div class="botoes">
+
+        <button class="botao" id="abrirMenu">
+            ☰
+        </button>
+
+    </div>
+
+    <nav class="menu" id="menu">
+
+        <a href="inicio.html">Início</a>
+        <a href="boletim.html">Boletim</a>
+        <a href="calendario.html">Calendário Escolar</a>
+        <a href="frequencia.html">Frequência</a>
+        <a href="notas.html">Minhas Notas</a>
+
+    </nav>
+
+</header>
+
+<main>
+
+    <section class="titulo">
+
+        <h1>Calendário Escolar</h1>
+
+        <p>Primeira semana de agosto</p>
+
+    </section>
+
+    <section class="calendario">
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Dia</th>
+                    <th>Data</th>
+                    <th>1ª aula</th>
+                    <th>2ª aula</th>
+                    <th>3ª aula</th>
+                    <th>4ª aula</th>
+                    <th>5ª aula</th>
+                    <th>6ª aula</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td>Segunda</td>
+                    <td>03/08</td>
+                    <td>Matemática</td>
+                    <td>Português</td>
+                    <td>Banco de Dados</td>
+                    <td>Física</td>
+                    <td>Mobile</td>
+                    <td>Educação Física</td>
+                </tr>
+
+                <tr>
+                    <td>Terça</td>
+                    <td>04/08</td>
+                    <td>Desenvolvimento de Sistemas</td>
+                    <td>Matemática</td>
+                    <td>Ciência de Dados</td>
+                    <td>Português</td>
+                    <td>Banco de Dados</td>
+                    <td>Educação Financeira</td>
+                </tr>
+
+                <tr>
+                    <td>Quarta</td>
+                    <td>05/08</td>
+                    <td>Física</td>
+                    <td>Back-end</td>
+                    <td>Matemática</td>
+                    <td>Projeto de Vida</td>
+                    <td>Português</td>
+                    <td>Computação Gráfica</td>
+                </tr>
+
+                <tr>
+                    <td>Quinta</td>
+                    <td>06/08</td>
+                    <td>Banco de Dados</td>
+                    <td>Matemática</td>
+                    <td>Educação Física</td>
+                    <td>Ciência de Dados</td>
+                    <td>Desenvolvimento de Sistemas</td>
+                    <td>Português</td>
+                </tr>
+
+                <tr>
+                    <td>Sexta</td>
+                    <td>07/08</td>
+                    <td>Mobile</td>
+                    <td>Física</td>
+                    <td>Banco de Dados</td>
+                    <td>Matemática</td>
+                    <td>Projeto de Vida</td>
+                    <td>Educação Financeira</td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </section>
+
+    <section class="provas">
+
+        <h2>Provas da semana</h2>
+
+        <div class="prova">
+            <strong>05/08</strong>
+            <span>Prova de Física</span>
+        </div>
+
+        <div class="prova">
+            <strong>07/08</strong>
+            <span>Prova de Matemática</span>
+        </div>
+
+    </section>
+
+    <section class="acesso">
+
+        <h2>Informações do calendário</h2>
+
+        <p>
+            Algumas informações estão protegidas por senha.
+        </p>
+
+        <button class="botao-senha" id="abrirSenha">
+            Ver informações
+        </button>
+
+        <div class="campo-senha" id="campoSenha">
+
+            <input
+                type="password"
+                id="senha"
+                placeholder="Digite sua senha"
+            >
+
+            <button class="confirmar" id="confirmar">
+                Confirmar
+            </button>
+
+            <div class="erro" id="erro">
+                Senha incorreta. Tente novamente.
+            </div>
+
+        </div>
+
+        <div class="informacao" id="informacao">
+
+            <strong>Almoço da semana</strong>
+
+            <p>
+                Segunda-feira: arroz, feijão e frango.<br>
+                Terça-feira: macarrão e carne.<br>
+                Quarta-feira: arroz, feijão e carne.<br>
+                Quinta-feira: arroz, feijão e frango.<br>
+                Sexta-feira: macarrão com molho.
+            </p>
+
+        </div>
+
+    </section>
+
+</main>
+
+<script>
+const abrirMenu = document.getElementById("abrirMenu");
+const menu = document.getElementById("menu");
+const abrirSenha = document.getElementById("abrirSenha");
+const campoSenha = document.getElementById("campoSenha");
+const senha = document.getElementById("senha");
+const confirmar = document.getElementById("confirmar");
+const erro = document.getElementById("erro");
+const informacao = document.getElementById("informacao");
+
+abrirMenu.addEventListener("click", function(){
+
+    menu.classList.toggle("ativo");
+
+});
+
+abrirSenha.addEventListener("click", function(){
+
+    campoSenha.classList.add("ativo");
+    senha.focus();
+
+});
+
+confirmar.addEventListener("click", function(){
+
+    if(senha.value === "070709"){
+
+        erro.classList.remove("mostrar");
+        informacao.classList.add("mostrar");
+        campoSenha.classList.remove("ativo");
+        abrirSenha.style.display = "none";
+
+    }else{
+
+        erro.classList.add("mostrar");
+        senha.value = "";
+
+    }
+
+});
+</script>
+
+</body>
+</html>
