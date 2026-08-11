@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Educa+ | Boletim</title>
+
+<style>
+*{
+    box-sizing: border-box;
+}
+
+body{
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f9fc;
+    color: #174a70;
+}
+
+header{
+    width: 100%;
+    height: 75px;
+    background: linear-gradient(90deg, #1769aa, #0d8ac7);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 45px;
+    box-shadow: 0 4px 15px rgba(0, 70, 120, 0.15);
+    position: relative;
+}
+
+.logo{
+    color: white;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.botoes{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.botao{
+    width: 45px;
+    height: 45px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    color: white;
+    font-size: 21px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.botao:hover{
+    background: rgba(255,255,255,0.3);
+    transform: scale(1.05);
+}
+
+.menu{
+    display: none;
+    position: absolute;
+    top: 85px;
+    right: 45px;
+    width: 250px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 70, 120, 0.18);
+    padding: 10px;
+    z-index: 10;
+}
+
+.menu.ativo{
+    display: block;
+}
+
+.menu a{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    color: #174a70;
+    text-decoration: none;
+    border-radius: 11px;
+    font-weight: bold;
+    transition: 0.25s;
+}
+
+.menu a:hover{
+    background: #eaf6fc;
+    color: #1769aa;
+    transform: translateX(3px);
+}
+
+main{
+    width: 90%;
+    max-width: 950px;
+    margin: 45px auto;
+}
+
+.titulo{
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.titulo h1{
+    margin: 0;
+    color: #1769aa;
+    font-size: 34px;
+}
+
+.boletim{
+    background: white;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 5px 20px rgba(0, 70, 120, 0.08);
+}
+
+.tabela{
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tabela th{
+    background: #1769aa;
+    color: white;
+    padding: 12px;
+}
+
+.tabela td{
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #e3edf2;
+}
+
+.tabela td:first-child{
+    text-align: left;
+    font-weight: bold;
+}
+
+.nota{
+    color: #1769aa;
+    font-weight: bold;
+}
+
+.recados{
+    margin-top: 30px;
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 5px 20px rgba(0, 70, 120, 0.08);
+    text-align: center;
+}
+
+.recados h2{
+    margin: 0 0 10px;
+    color: #174a70;
+}
+
+.recados > p{
+    color: #71808b;
+}
+
+.cadeado{
+    font-size: 45px;
+    margin: 18px 0;
+}
+
+.botao-ver{
+    border: none;
+    background: #1769aa;
+    color: white;
+    padding: 13px 25px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.botao-ver:hover{
+    background: #0d8ac7;
+    transform: translateY(-2px);
+}
+
+.login-senha{
+    display: none;
+    margin-top: 20px;
+}
+
+.login-senha.ativo{
+    display: block;
+}
+
+.login-senha input{
+    padding: 13px;
+    width: 260px;
+    border: 2px solid #d8e8f2;
+    border-radius: 10px;
+    outline: none;
+    font-size: 15px;
+}
+
+.confirmar{
+    padding: 13px 20px;
+    border: none;
+    border-radius: 10px;
+    background: #1769aa;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.erro{
+    display: none;
+    color: #d32f2f;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+.erro.mostrar{
+    display: block;
+}
+
+.mensagens{
+    display: none;
+    margin-top: 30px;
+    text-align: left;
+}
+
+.mensagens.mostrar{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.comentario{
+    background: #f7fbfd;
+    border: 1px solid #dcecf4;
+    border-radius: 15px;
+    padding: 18px 20px;
+}
+
+.comentario-topo{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.avatar{
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #1769aa;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.comentario h3{
+    margin: 0;
+    color: #1769aa;
+    font-size: 17px;
+}
+
+.comentario span{
+    color: #84939d;
+    font-size: 13px;
+}
+
+.comentario p{
+    margin: 0;
+    color: #526875;
+    line-height: 1.6;
+}
+
+@media(max-width: 650px){
+
+    header{
+        padding: 0 20px;
+    }
+
+    .menu{
+        right: 20px;
+    }
+
+    main{
+        width: 92%;
+    }
+
+    .boletim{
+        overflow-x: auto;
+    }
+
+    .tabela{
+        min-width: 600px;
+    }
+
+    .login-senha input{
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .confirmar{
+        width: 100%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        Educa+
+    </div>
+
+    <div class="botoes">
+
+        <button class="botao" id="login">
+            👤
+        </button>
+
+        <button class="botao" id="abrirMenu">
+            ☰
+        </button>
+
+    </div>
+
+    <nav class="menu" id="menu">
+
+        <a href="inicio.html">
+             Início
+        </a>
+
+        <a href="boletim.html">
+             Boletim
+        </a>
+
+        <a href="calendario.html">
+             Calendário Escolar
+        </a>
+
+        <a href="frequencia.html">
+             Frequência
+        </a>
+
+        <a href="notas.html">
+             Minhas Notas
+        </a>
+
+    </nav>
+
+</header>
+
+<main>
+
+    <section class="titulo">
+
+        <h1>Meu Boletim</h1>
+
+    </section>
+
+    <section class="boletim">
+
+        <table class="tabela">
+
+            <thead>
+
+                <tr>
+                    <th>Disciplina</th>
+                    <th>1º</th>
+                    <th>2º</th>
+                    <th>3º</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td>Matemática</td>
+                    <td class="nota">8,5</td>
+                    <td class="nota">9,0</td>
+                    <td class="nota">8,7</td>
+                </tr>
+
+                <tr>
+                    <td>Português</td>
+                    <td class="nota">9,0</td>
+                    <td class="nota">8,5</td>
+                    <td class="nota">9,2</td>
+                </tr>
+
+                <tr>
+                    <td>Física</td>
+                    <td class="nota">8,0</td>
+                    <td class="nota">8,8</td>
+                    <td class="nota">9,0</td>
+                </tr>
+
+                <tr>
+                    <td>Geografia</td>
+                    <td class="nota">8,7</td>
+                    <td class="nota">9,0</td>
+                    <td class="nota">8,5</td>
+                </tr>
+
+                <tr>
+                    <td>Ciências</td>
+                    <td class="nota">9,0</td>
+                    <td class="nota">8,7</td>
+                    <td class="nota">9,3</td>
+                </tr>
+
+                <tr>
+                    <td>Inglês</td>
+                    <td class="nota">8,5</td>
+                    <td class="nota">9,0</td>
+                    <td class="nota">8,8</td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </section>
+
+    <section class="recados">
+
+        <h2>🔒 Recados dos Professores</h2>
+
+        <p>
+            Digite sua senha para visualizar os recados.
+        </p>
+
+        <div class="cadeado">
+            🔒
+        </div>
+
+        <button class="botao-ver" id="abrirSenha">
+            Visualizar Recados
+        </button>
+
+        <div class="login-senha" id="loginSenha">
+
+            <input
+                type="password"
+                id="senha"
+                placeholder="Digite sua senha"
+            >
+
+            <button class="confirmar" id="confirmar">
+                Confirmar
+            </button>
+
+            <div class="erro" id="erro">
+                Senha incorreta. Tente novamente.
+            </div>
+
+        </div>
+
+        <div class="mensagens" id="mensagens">
+
+            <div class="comentario">
+
+                <div class="comentario-topo">
+
+                    <div class="avatar">
+                        A
+                    </div>
+
+                    <div>
+                        <h3>Anne</h3>
+                        <span>Matemática</span>
+                    </div>
+
+                </div>
+
+                <p>
+                    Não se esqueçam de acessar a Khan Academy
+                    para realizar as atividades de Matemática.
+                </p>
+
+            </div>
+
+            <div class="comentario">
+
+                <div class="comentario-topo">
+
+                    <div class="avatar">
+                        L
+                    </div>
+
+                    <div>
+                        <h3>Luiz</h3>
+                        <span>Banco de Dados</span>
+                    </div>
+
+                </div>
+
+                <p>
+                    Relembrando sobre o trabalho dos códigos.
+                    Organizem o trabalho e não deixem para a última hora.
+                </p>
+
+            </div>
+
+            <div class="comentario">
+
+                <div class="comentario-topo">
+
+                    <div class="avatar">
+                        L
+                    </div>
+
+                    <div>
+                        <h3>Leonardo</h3>
+                        <span>Desenvolvimento de Sistema</span>
+                    </div>
+
+                </div>
+
+                <p>
+                    Não se esqueçam do trabalho do MPBook.
+                    Confiram as atividades e os prazos.
+                </p>
+
+            </div>
+
+            <div class="comentario">
+
+                <div class="comentario-topo">
+
+                    <div class="avatar">
+                        E
+                    </div>
+
+                    <div>
+                        <h3>Elisa</h3>
+                        <span>Educação Física</span>
+                    </div>
+
+                </div>
+
+                <p>
+                    Relembrando sobre o trabalho relacionado
+                    à Festa Junina. Não se esqueçam de reescrever.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+<script>
+const abrirMenu = document.getElementById("abrirMenu");
+const menu = document.getElementById("menu");
+const login = document.getElementById("login");
+const abrirSenha = document.getElementById("abrirSenha");
+const loginSenha = document.getElementById("loginSenha");
+const confirmar = document.getElementById("confirmar");
+const senha = document.getElementById("senha");
+const erro = document.getElementById("erro");
+const mensagens = document.getElementById("mensagens");
+
+abrirMenu.addEventListener("click", function(){
+
+    menu.classList.toggle("ativo");
+
+});
+
+login.addEventListener("click", function(){
+
+    window.location.href = "login.html";
+
+});
+
+abrirSenha.addEventListener("click", function(){
+
+    loginSenha.classList.add("ativo");
+    senha.focus();
+
+});
+
+confirmar.addEventListener("click", function(){
+
+    if(senha.value === "070709"){
+
+        erro.classList.remove("mostrar");
+        loginSenha.classList.remove("ativo");
+        abrirSenha.style.display = "none";
+        mensagens.classList.add("mostrar");
+
+    }else{
+
+        erro.classList.add("mostrar");
+        senha.value = "";
+
+    }
+
+});
+</script>
+
+</body>
+</html>
