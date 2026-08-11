@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Educa+ | Minhas Notas</title>
+
+<style>
+*{
+    box-sizing: border-box;
+}
+
+body{
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f9fc;
+    color: #174a70;
+}
+
+header{
+    width: 100%;
+    height: 75px;
+    background: linear-gradient(90deg, #1769aa, #0d8ac7);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 45px;
+    box-shadow: 0 4px 15px rgba(0, 70, 120, 0.15);
+    position: relative;
+}
+
+.logo{
+    color: white;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.botoes{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.botao{
+    width: 45px;
+    height: 45px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    color: white;
+    font-size: 21px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.botao:hover{
+    background: rgba(255,255,255,0.3);
+    transform: scale(1.05);
+}
+
+.menu{
+    display: none;
+    position: absolute;
+    top: 85px;
+    right: 45px;
+    width: 250px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 70, 120, 0.18);
+    padding: 10px;
+    z-index: 10;
+}
+
+.menu.ativo{
+    display: block;
+}
+
+.menu a{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    color: #174a70;
+    text-decoration: none;
+    border-radius: 11px;
+    font-weight: bold;
+    transition: 0.25s;
+}
+
+.menu a:hover{
+    background: #eaf6fc;
+    color: #1769aa;
+    transform: translateX(3px);
+}
+
+.icone{
+    width: 25px;
+    text-align: center;
+    font-size: 19px;
+}
+
+main{
+    width: 90%;
+    max-width: 1050px;
+    margin: 45px auto;
+}
+
+.titulo{
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.titulo h1{
+    margin: 0;
+    color: #1769aa;
+    font-size: 34px;
+}
+
+.disciplinas{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    width: 100%;
+}
+
+.disciplina{
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background: white;
+    border-radius: 18px;
+    padding: 25px;
+    box-shadow: 0 5px 20px rgba(0, 70, 120, 0.08);
+    border-top: 5px solid #1769aa;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: 0.3s;
+}
+
+.disciplina:hover{
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0, 70, 120, 0.13);
+}
+
+.disciplina h2{
+    margin: 0 0 20px;
+    color: #1769aa;
+    font-size: 21px;
+    text-align: center;
+}
+
+.notas{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.nota{
+    height: 65px;
+    border-radius: 10px;
+    background: #eaf6fc;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.nota span{
+    font-size: 11px;
+    color: #71808b;
+}
+
+.nota strong{
+    font-size: 17px;
+    color: #174a70;
+}
+
+.final{
+    margin: 40px auto 0;
+    max-width: 700px;
+    background: white;
+    border-radius: 20px;
+    padding: 35px;
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(0, 70, 120, 0.08);
+}
+
+.final h2{
+    margin: 0 0 10px;
+    color: #174a70;
+}
+
+.final p{
+    color: #71808b;
+}
+
+.nota-escondida{
+    font-size: 40px;
+    color: #1769aa;
+    margin: 20px 0;
+    font-weight: bold;
+    letter-spacing: 5px;
+}
+
+.botao-desbloquear{
+    border: none;
+    background: #1769aa;
+    color: white;
+    padding: 13px 25px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.botao-desbloquear:hover{
+    background: #0d8ac7;
+    transform: translateY(-2px);
+}
+
+.login-senha{
+    display: none;
+    margin-top: 25px;
+}
+
+.login-senha.ativo{
+    display: block;
+}
+
+.login-senha input{
+    padding: 13px;
+    width: 260px;
+    border: 2px solid #d8e8f2;
+    border-radius: 10px;
+    outline: none;
+}
+
+.confirmar{
+    padding: 13px 20px;
+    border: none;
+    border-radius: 10px;
+    background: #1769aa;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.erro{
+    display: none;
+    color: #d32f2f;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+.erro.mostrar{
+    display: block;
+}
+
+.resultado{
+    display: none;
+}
+
+.resultado.mostrar{
+    display: block;
+}
+
+.nota-final{
+    font-size: 45px;
+    color: #1769aa;
+    font-weight: bold;
+    margin: 15px 0;
+}
+
+@media(max-width: 600px){
+
+    header{
+        padding: 0 20px;
+    }
+
+    .menu{
+        right: 20px;
+    }
+
+    main{
+        width: 92%;
+    }
+
+    .disciplinas{
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+
+    .disciplina{
+        padding: 15px;
+    }
+
+    .disciplina h2{
+        font-size: 16px;
+    }
+
+    .notas{
+        gap: 4px;
+    }
+
+    .nota{
+        height: 55px;
+    }
+
+    .nota span{
+        font-size: 9px;
+    }
+
+    .nota strong{
+        font-size: 13px;
+    }
+
+    .login-senha input{
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .confirmar{
+        width: 100%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        Educa+
+    </div>
+
+    <div class="botoes">
+
+        <button class="botao" id="login" title="Login">
+            👤
+        </button>
+
+        <button class="botao" id="abrirMenu" title="Menu">
+            ☰
+        </button>
+
+    </div>
+
+    <nav class="menu" id="menu">
+
+        <a href="inicio.html">
+            <span class="icone"></span>
+            <span>Início</span>
+        </a>
+
+        <a href="boletim.html">
+            <span class="icone"></span>
+            <span>Boletim</span>
+        </a>
+
+        <a href="calendario.html">
+            <span class="icone"></span>
+            <span>Calendário Escolar</span>
+        </a>
+
+        <a href="frequencia.html">
+            <span class="icone"></span>
+            <span>Frequência</span>
+        </a>
+
+        <a href="notas.html">
+            <span class="icone"></span>
+            <span>Minhas Notas</span>
+        </a>
+
+    </nav>
+
+</header>
+
+<main>
+
+    <section class="titulo">
+        <h1>Minhas Notas</h1>
+    </section>
+
+    <section class="disciplinas">
+
+        <div class="disciplina">
+
+            <h2>Matemática</h2>
+
+            <div class="notas">
+
+                <div class="nota">
+                    <span>1º</span>
+                    <strong>8,5</strong>
+                </div>
+
+                <div class="nota">
+                    <span>2º</span>
+                    <strong>9,0</strong>
+                </div>
+
+                <div class="nota">
+                    <span>3º</span>
+                    <strong>8,7</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="disciplina">
+
+            <h2>Português</h2>
+
+            <div class="notas">
+
+                <div class="nota">
+                    <span>1º</span>
+                    <strong>9,0</strong>
+                </div>
+
+                <div class="nota">
+                    <span>2º</span>
+                    <strong>8,5</strong>
+                </div>
+
+                <div class="nota">
+                    <span>3º</span>
+                    <strong>9,2</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="disciplina">
+
+            <h2>Física</h2>
+
+            <div class="notas">
+
+                <div class="nota">
+                    <span>1º</span>
+                    <strong>8,0</strong>
+                </div>
+
+                <div class="nota">
+                    <span>2º</span>
+                    <strong>8,8</strong>
+                </div>
+
+                <div class="nota">
+                    <span>3º</span>
+                    <strong>9,0</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="disciplina">
+
+            <h2>Geografia</h2>
+
+            <div class="notas">
+
+                <div class="nota">
+                    <span>1º</span>
+                    <strong>8,7</strong>
+                </div>
+
+                <div class="nota">
+                    <span>2º</span>
+                    <strong>9,0</strong>
+                </div>
+
+                <div class="nota">
+                    <span>3º</span>
+                    <strong>8,5</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="disciplina">
+
+            <h2>Ciências</h2>
+
+            <div class="notas">
+
+                <div class="nota">
+                    <span>1º</span>
+                    <strong>9,0</strong>
+                </div>
+
+                <div class="nota">
+                    <span>2º</span>
+                    <strong>8,7</strong>
+                </div>
+
+                <div class="nota">
+                    <span>3º</span>
+                    <strong>9,3</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="disciplina">
+
+            <h2>Inglês</h2>
+
+            <div class="notas">
+
+                <div class="nota">
+                    <span>1º</span>
+                    <strong>8,5</strong>
+                </div>
+
+                <div class="nota">
+                    <span>2º</span>
+                    <strong>9,0</strong>
+                </div>
+
+                <div class="nota">
+                    <span>3º</span>
+                    <strong>8,8</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="final">
+
+        <h2>🔒 Nota Final Acumulada</h2>
+
+        <p>
+            A nota final acumulada está protegida por senha.
+        </p>
+
+        <div class="nota-escondida">
+            •••••
+        </div>
+
+        <button class="botao-desbloquear" id="abrirSenha">
+            Ver Nota Final
+        </button>
+
+        <div class="login-senha" id="loginSenha">
+
+            <input
+                type="password"
+                id="senhaFinal"
+                placeholder="Digite sua senha"
+            >
+
+            <button class="confirmar" id="confirmar">
+                Confirmar
+            </button>
+
+            <div class="erro" id="erro">
+                Senha incorreta. Tente novamente.
+            </div>
+
+        </div>
+
+        <div class="resultado" id="resultado">
+
+            <p>
+                Nota final acumulada até o momento:
+            </p>
+
+            <div class="nota-final">
+                8,8
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+<script>
+const abrirMenu = document.getElementById("abrirMenu");
+const menu = document.getElementById("menu");
+const login = document.getElementById("login");
+const abrirSenha = document.getElementById("abrirSenha");
+const loginSenha = document.getElementById("loginSenha");
+const confirmar = document.getElementById("confirmar");
+const senhaFinal = document.getElementById("senhaFinal");
+const erro = document.getElementById("erro");
+const resultado = document.getElementById("resultado");
+
+abrirMenu.addEventListener("click", function(){
+
+    menu.classList.toggle("ativo");
+
+});
+
+login.addEventListener("click", function(){
+
+    window.location.href = "login.html";
+
+});
+
+abrirSenha.addEventListener("click", function(){
+
+    loginSenha.classList.add("ativo");
+    senhaFinal.focus();
+
+});
+
+confirmar.addEventListener("click", function(){
+
+    if(senhaFinal.value === "070709"){
+
+        erro.classList.remove("mostrar");
+        resultado.classList.add("mostrar");
+        loginSenha.classList.remove("ativo");
+        abrirSenha.style.display = "none";
+
+    }else{
+
+        erro.classList.add("mostrar");
+        senhaFinal.value = "";
+
+    }
+
+});
+</script>
+
+</body>
+</html>
